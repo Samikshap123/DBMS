@@ -1,0 +1,50 @@
+db.employee.insertOne({Empid:1,
+			Name:{FName:"Sahil",LName:"Naik"},
+			Company:"None", Salary:100,
+			Designation:"Programmer",
+			Age:21,
+			Expertise:["Helper","Senior"],
+			DOB:"26022002",
+			Emailid:"F_you@gmail.com",
+			Contact:"469369",
+			Address:{Paddr:{City:"Pune",Pin_code:"411001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
+
+1. Select all documents where the Designation field has the value "Programmer" and 
+the value of the salary field is greater than 30000.
+db.emp.find( {"Designation":"Programmer","Salary":{$gt:30000}} ).pretty()
+
+2. Creates a new document if no document in the employee collection contains
+{Designation: "Tester", Company_name: "TCS", Age: 25}
+db.emp.update({Designation: "Tester", Company_name : "TCS" },{ $set : { Age: 25 } },{ 
+upsert : true })
+
+3. Selects all documents in the collection where the field age has a value less than 30 or 
+the value of the salary field is greater than 40000.
+db.emp.find( {$or:[ {Age:{$lt:30}}, {Salary:{$gt:40000}} ] } ).pretty()
+
+4. Matches all documents where the value of the field Address is an embedded 
+document that contains only the field city with the value "Pune" and the field 
+Pin_code with the value "411001".
+db.emp.find( {"Address.PAddress":"Pune","Address.PinCode":"411001"} ).pretty()
+
+5. Finds all documents with Company_name: "TCS" and modifies their salary field by 
+2000. 
+db.emp.update( {CName:"TCS"}, {$inc:{Salary:2000}}, {multi:true})
+
+6. Find documents where Designation is not equal to "Developer".
+db.emp.find({Designation:{$ne:"Developer"}}).pretty()
+
+7. Find _id, Designation, Address and Name from all documents where 
+Company_name is "Infosys".
+db.emp.find( {CName:"Amazon"}, {_id:1,Designation:1,Address:1,Name:1} ).pretty()
+
+8. Selects all documents in the employee collection where the value of the Designation 
+is either "Developer" or "Tester".
+db.emp.find( {$or:[{Designation:"Developer"},{Designation:"Tester"}]} ).pretty()
+
+9. Find all document with Exact Match on an Array having Expertise: 
+['Mongodb','Mysql', 'Cassandra']
+db.emp.find( {Expertise:["Mongodb","Mysql","Cassandra"]}).pretty()
+
+10. Drop Single documents where designation="Developer".
+db.emp.remove({Designation:"Developer"},1)

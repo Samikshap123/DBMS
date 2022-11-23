@@ -1,0 +1,40 @@
+db.employee.insertOne({Empid:1,
+			Name:{FName:"Sahil",LName:"Naik"},
+			Company:"None", Salary:100,
+			Designation:"Programmer",
+			Age:21,
+			Expertise:["Helper","Senior"],
+			DOB:"26022002",
+			Emailid:"F_you@gmail.com",
+			Contact:"469369",
+			Address:{Paddr:{City:"Pune",Pin_code:"411001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
+
+1.	Return the Total Salary of per Company
+db.emp.mapReduce( function() { emit(this.Company_name, this.Salary);},
+function(keyCompany_name,Salary) {return Array.sum(Salary)}, { out: "result1" })
+
+2.	Return the Total Salary of Company Name:"TCS"
+db.emp.mapReduce(
+function() { emit(this.Company_name, this.Salary);},
+function(keyCompany_name,Salary) {return Array.sum(Salary)},
+{query:{Company_name: "TCS"},out: "result2"})
+
+3.	Return the Avg Salary of Company whose address is “Pune".
+db.emp.mapReduce(
+function() { emit(this.address, this.Salary);},
+function(keyaddress,Salary) {return Array.avg(Salary)},
+{query:{address: "Pune"},out: "result3"})
+
+4.	Return the Total Salary for each Designation of Infosys.
+5.	Return total count for “State=AP”
+db.emp.mapReduce(
+function(){emit(1, 1);},
+function(key, result){ return Array.sum(result);},
+{query: {"Address.State":"AP"}, out: "result5"})
+
+6.	Return Count for State AP and Age greater than 40.
+db.emp.mapReduce(
+function(){emit(1, 1);},
+function(key, result){ return Array.sum(result);},
+{query: {"Address.State":"AP","Age": {"$gt" : 40 }},out: "result6"})
+

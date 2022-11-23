@@ -1,0 +1,36 @@
+terminal-1
+pip install mysql.connector-python
+
+terminal-2
+sudo mysql
+
+use mysql
+
+update user set plugin='mysql_native_password' where user='root';
+
+flush privileges;
+
+show databases;
+
+use databasename;
+
+show tables;
+
+create table emp2;
+
+terminal-1
+gedit t.py
+
+***********************************************
+
+import mysql.connector
+mydb=mysql.connector.connect(host="localhost",user="root",database="demo")
+mycursor=mydb.cousor()
+sql="insert into emp2 values('sam',1)"
+sql="UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'"
+sl="DELETE FROM customers WHERE address = 'Mountain 21'"
+mycursor.execute(sql)
+mydb.commit()
+print("record inserted")
+
+python t.py

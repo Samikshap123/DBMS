@@ -1,0 +1,29 @@
+mongo
+
+use database db
+
+db.createCollection('DBMS')
+
+db.DBMS.insert({name:'Sam',class:A})
+
+new terminal***************************
+
+pip install pymongo
+
+gedit test.py
+
+*******************************************
+
+import pymongo
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb=myclient["db"]
+print(mydb.list_collection_names())
+print("code is working")
+collist=mydb.list_collection_names()
+mycol=mydb["DBMS"]
+
+mycol.insert_one({"_id":1,"name":"Sam","class":"A"})
+mycol.update_one({"name":"Sam"},{"$set":{"name":"Disha"}})
+mycol.delete({"name":"Disha"})
+
+python test.py

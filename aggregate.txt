@@ -1,0 +1,48 @@
+db.employee.insertOne({Empid:1,
+			Name:{FName:"Sahil",LName:"Naik"},
+			Company:"None", Salary:100,
+			Designation:"Programmer",
+			Age:21,
+			Expertise:["Helper","Senior"],
+			DOB:"26022002",
+			Emailid:"F_you@gmail.com",
+			Contact:"469369",
+			Address:{Paddr:{City:"Pune",Pin_code:"411001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
+
+
+1. Return Designation with Total Salary is Above 200000
+db.s.aggregate( { $group :{ _id : "$Designation",totalSal : { $sum : "$Salary"}}},{$match : 
+{totalSal : { $lte : 200000 } } } )
+
+2. Find Employee with Total Salary for Each City with Designation="DBA" 
+db.s.aggregate([{$match:{Designation:"DBA"}},{$group:{_id:"$Address",totalSal:{$sum:
+"$Salary"}}}])
+
+3. Find Total Salary of Employee with Designation="DBA" for Each Company 
+db.s.aggregate([{$match:{Designation:"DBA"}},{$group:{_id:"$Company_name",totalSal
+:{$sum:"$Salary"}}}])
+
+4. Returns names and _id in upper case and in alphabetical order.
+db.s.aggregate([{$project :{Name:{$toUpper:"$Name"}, _id:1 }},{ $sort : {Name :1}}] )
+
+5. Count all records from collection 
+db.s.aggregate( [{$group: {_id: null,count: { $sum: 1 }}}] )
+
+6. For each unique Designation, find avg Salary and output is sorted by AvgSal
+db.s.aggregate( [{$group: {_id: "$Designation",AvgSal: { $avg: "$Salary" }}}, { $sort: { 
+AvgSal: 1 } }] )
+
+7. Return separates value in the Expertise array where Name of Employee="Swapnil"
+db.s.aggregate ([{$unwind:"$Expertise"},{$match:{Name:"Swapnil"}}]).pretty()
+
+8. Return separates value in the Expertise array and return sum of each element of 
+array
+db.s.aggregate([{$unwind:"$Expertise"},{$group:{_id:"$Expertise",number:{$sum:1}}})
+
+9. Return Array for Designation whose address is "Pune"
+db.s.aggregate([{$match:{Address:"Pune"}},{$group:{_id:"$Address",
+Array_Designation:{$push:"$Designation"}}}])
+
+10. Return Max and Min Salary for each company.
+db.s.aggregate([{$group:{_id:"$Company_name",min:{$min:"$Salary"},
+max:{$max:"$Salary"}}}])
